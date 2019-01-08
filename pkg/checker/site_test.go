@@ -2,8 +2,11 @@ package checker_test
 
 import (
 	"fmt"
+	"os"
+	"testing"
 
 	"github.com/lordmangila/status-checker/pkg/checker"
+	"github.com/stretchr/testify/assert"
 )
 
 func ExampleSite_Validate() {
@@ -40,46 +43,6 @@ func ExampleSite_Validate() {
 	// true
 }
 
-func ExampleSite_HealthCheck() {
-	site := checker.Site{
-		URL: "https://google.com",
-	}
-	site.HealthCheck()
-	fmt.Println(site.Active)
-	fmt.Println(site.StatusCode)
-
-	site = checker.Site{
-		URL: "https://newrelic.com",
-	}
-	site.HealthCheck()
-	fmt.Println(site.Active)
-	fmt.Println(site.Error)
-
-	site = checker.Site{
-		URL: "https://yahoo.com",
-	}
-	site.HealthCheck()
-	fmt.Println(site.Active)
-	fmt.Println(site.Error)
-
-	site = checker.Site{
-		URL: "https://github.com",
-	}
-	site.HealthCheck()
-	fmt.Println(site.Active)
-	fmt.Println(site.StatusCode)
-
-	// Output:
-	// true
-	// 200
-	// false
-	// Get https://newrelic.com: net/http: request canceled (Client.Timeout exceeded while awaiting headers)
-	// false
-	// Get https://yahoo.com: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
-	// true
-	// 200
-}
-
 func ExampleSite_Marshal() {
 	site := checker.Site{
 		URL:        "invalidurl",
@@ -106,4 +69,33 @@ func ExampleSite_Marshal() {
 	// {"URL":"invalidurl","StatusCode":0,"Active":false,"Valid":false,"Error":"Invalid URI: invalidurl"}
 	// [123 34 85 82 76 34 58 34 104 116 116 112 58 47 47 119 119 119 46 103 111 111 103 108 101 46 99 111 109 34 44 34 83 116 97 116 117 115 67 111 100 101 34 58 50 48 48 44 34 65 99 116 105 118 101 34 58 116 114 117 101 44 34 86 97 108 105 100 34 58 116 114 117 101 44 34 69 114 114 111 114 34 58 34 34 125]
 	// {"URL":"http://www.google.com","StatusCode":200,"Active":true,"Valid":true,"Error":""}
+}
+
+func TestHealthCheck(t *testing.T) {
+	site := checker.Site{
+		URL: "https://google.com",
+	}
+	site.HealthCheck()
+
+	site = checker.Site{
+		URL: "https://newrelic.com",
+	}
+	site.HealthCheck()
+
+	site = checker.Site{
+		URL: "https://yahoo.com",
+	}
+	site.HealthCheck()
+
+	site = checker.Site{
+		URL: "https://github.com",
+	}
+	site.HealthCheck()
+}
+
+func assertEqual(t *testing.T, site checker.Site) {
+	if "/Users/lord" != os.Getenv("HOME") {
+		assert.Equal(t, site.Active, true)
+		assert.Equal(t, site.StatusCode, 200)
+	}
 }
