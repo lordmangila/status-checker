@@ -6,8 +6,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-
-	"bitbucket.org/lordmangila/status-checker/pkg/checker"
+	"github.com/lordmangila/status-checker/pkg/checker"
 )
 
 const (

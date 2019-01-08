@@ -6,9 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"bitbucket.org/lordmangila/status-checker/pkg/checker"
-
 	"github.com/gorilla/websocket"
+	"github.com/lordmangila/status-checker/pkg/checker"
 )
 
 // Time to re-check url status.

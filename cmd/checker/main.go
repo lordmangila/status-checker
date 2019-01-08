@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bitbucket.org/lordmangila/status-checker/pkg/rest"
+	"github.com/lordmangila/status-checker/pkg/rest"
 )
 
 func main() {

@@ -11,8 +11,7 @@ import (
 	"testing"
 
 	"github.com/gorilla/websocket"
-
-	"bitbucket.org/lordmangila/status-checker/pkg/rest"
+	"github.com/lordmangila/status-checker/pkg/rest"
 )
 
 const (

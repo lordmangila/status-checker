@@ -3,7 +3,7 @@ package checker_test
 import (
 	"fmt"
 
-	"bitbucket.org/lordmangila/status-checker/pkg/checker"
+	"github.com/lordmangila/status-checker/pkg/checker"
 )
 
 func ExampleSite_Validate() {
