@@ -1,0 +1,97 @@
+<!-- main.html -->
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title>Go Site Health Checker</title>
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	</head>
+
+	<body>
+		<section class="container">
+			<div class="row justify-content-center">
+				<div class="col-sm-8">
+					<pre id="output"></pre>
+
+					<form class="form-inline" onsubmit="event.preventDefault();">
+						<div class="form-group">
+							<label for="url" class="form-label">Check</label>
+							<input type="text" class="form-control mx-sm-3" id="url" placeholder="Enter url">
+							<button type="submit" class="btn btn-primary" onclick="send()">Go</button>
+						</div>
+					</form>
+
+					<ul id="list" class="list-group mt-100 mt-md-100 mt-sm-100"></ul>
+				</div>
+			</div>
+		</section>
+	</body>
+
+	<script type="text/javascript">
+		let index = 0;
+		let socket = null;
+
+		const iconCheck = "✅";
+		const iconInvalid = "❌";
+
+		const list = document.getElementById("list");
+		const input = document.getElementById("url");
+		const output = document.getElementById("output");
+
+		if (window.WebSocket) {
+			socket = new WebSocket("ws://localhost:8080/check");
+
+			socket.onopen = () => {
+				output.innerHTML += "Status: Connected\n";
+			};
+
+			socket.onmessage = e =>  {
+				const json = JSON.parse(e.data);
+				const lists = list.getElementsByTagName("li");
+
+				for (let i = 0; i < lists.length; i++) {
+					appendIcon(lists[i], json);
+				}
+			};
+		} else {
+			document.body.innerHTML = "<h3>Websocket is Not Supported</h3>";
+		}
+	
+		const appendURLToList = () => {
+			listChild = document.createElement("li");
+			listChild.className = "list-group-item d-flex justify-content-between align-items-center";
+			listChild.innerHTML = input.value;
+			list.appendChild(listChild);
+
+			return;
+		}
+	
+		const appendIcon = (elem, resp) => {
+			if (elem.innerHTML.indexOf(resp.URL) <= -1) {
+				return;
+			}
+
+			if (resp.Error) {
+				return elem.innerHTML = resp.URL + " <span class=\"badge badge-danger badge-pill\">Invalid URL<span/>";
+			}
+
+			return elem.innerHTML = resp.URL + " <span class=\"badge badge-light badge-pill\">" + (resp.Active ? iconCheck : iconInvalid) + "<span/>";
+		}
+	
+		const send = () => {
+			if (!socket || !input.value) {
+				return false;
+			}
+
+			appendURLToList();
+	
+			socket.send(input.value);
+			input.value = "";
+		}
+	</script>
+
+</html>
