@@ -79,12 +79,12 @@ func ExampleServer() {
 
 	// This will be done twice as there are already 2 sites registered to the client.
 	// Read response from the websocket.
-	// 1st reponse will show google status.
+	// 1st response will show google status.
 	_, message, _ = conn.ReadMessage()
 	fmt.Println(string(message))
 
 	// Read response from the websocket.
-	// 2nd reponse will show github status.
+	// 2nd response will show github status.
 	_, message, _ = conn.ReadMessage()
 	fmt.Println(string(message))
 

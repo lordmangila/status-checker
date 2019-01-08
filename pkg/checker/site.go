@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	// Time allowed to for website to return a reponse.
+	// Time allowed to for website to return a response.
 	timeout = 800 * time.Millisecond
 )
 

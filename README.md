@@ -1,5 +1,8 @@
 # Go Site Health Checker
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/lordmangila/status-checker?style=flat-square)](https://goreportcard.com/report/github.com/lordmangila/status-checker)
+[![CircleCI](https://circleci.com/gh/lordmangila/status-checker.svg?style=svg)](https://circleci.com/gh/lordmangila/status-checker)
+
 This is a demo website health checker application utilising
 [gorilla/websocket](https://github.com/gorilla/websocket) package.
 
